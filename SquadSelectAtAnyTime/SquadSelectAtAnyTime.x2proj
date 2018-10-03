@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Guid>37441e14-8b54-45e7-8cb1-97fcf10d05ac</Guid>
+    <Name>SquadSelectAtAnyTime</Name>
+    <Description>This mod allows to open squad select screen at ay time</Description>
+    <SteamPublishID>0</SteamPublishID>
+    <AssemblyName>SquadSelectAtAnyTime</AssemblyName>
+    <RootNamespace>SquadSelectAtAnyTime</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="Localization\" />
+    <Folder Include="Src\" />
+    <Folder Include="Src\SquadSelectAtAnyTime\" />
+    <Folder Include="Src\SquadSelectAtAnyTime\Classes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\XComSSAAT.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Localization\SquadSelectAtAnyTime.int">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Localization\XComSSAAT.int">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ReadMe.txt" />
+    <Content Include="ModPreview.jpg" />
+    <Content Include="Config\XComEditor.ini" />
+    <Content Include="Config\XComEngine.ini" />
+    <Content Include="Config\XComGame.ini" />
+    <Content Include="Localization\XComGame.int" />
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_DummyMissionRemover.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_ElementRemover.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Listener_AvengerHud.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Listener_SquadSelect.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_MissionSet.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_MissionSources.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Opener.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\X2DownloadableContentInfo_SquadSelectAtAnyTime.uc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildLocalExtensionPath)\XCOM2.targets" />
+</Project>
