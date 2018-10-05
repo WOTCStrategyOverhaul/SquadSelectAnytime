@@ -52,6 +52,9 @@
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Opener.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_SquadSelectConfiguration.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\X2DownloadableContentInfo_SquadSelectAtAnyTime.uc" />
   </ItemGroup>
   <Import Project="$(MSBuildLocalExtensionPath)\XCOM2.targets" />
