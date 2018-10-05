@@ -1,3 +1,10 @@
+//---------------------------------------------------------------------------------------
+//  AUTHOR:  Xymanek
+//  PURPOSE: This class defines the X2MissionTemplate for the fake mission
+//---------------------------------------------------------------------------------------
+//  WOTCStrategyOverhaul Team
+//---------------------------------------------------------------------------------------
+
 class SSAAT_MissionSet extends X2Mission;
 
 static function array<X2DataTemplate> CreateTemplates()

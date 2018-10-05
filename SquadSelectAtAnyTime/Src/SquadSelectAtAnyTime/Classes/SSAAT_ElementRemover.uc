@@ -1,3 +1,11 @@
+//---------------------------------------------------------------------------------------
+//  AUTHOR:  Xymanek
+//  PURPOSE: This class is used to remove or hide UIPanels (and children) that are not
+//           needed when showing Squad Select for the fake mission
+//---------------------------------------------------------------------------------------
+//  WOTCStrategyOverhaul Team
+//---------------------------------------------------------------------------------------
+
 class SSAAT_ElementRemover extends UIPanel config(SSAAT);
 
 var config array<name> PanelsToRemove;

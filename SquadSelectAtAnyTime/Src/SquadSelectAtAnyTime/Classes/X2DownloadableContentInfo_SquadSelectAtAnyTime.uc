@@ -1,11 +1,8 @@
 //---------------------------------------------------------------------------------------
-//  FILE:   XComDownloadableContentInfo_SquadSelectAtAnyTime.uc                                    
-//           
-//	Use the X2DownloadableContentInfo class to specify unique mod behavior when the 
-//  player creates a new campaign or loads a saved game.
-//  
+//  AUTHOR:  Xymanek
+//  PURPOSE: This class is used for various hooks. Currently it does nothing
 //---------------------------------------------------------------------------------------
-//  Copyright (c) 2016 Firaxis Games, Inc. All rights reserved.
+//  WOTCStrategyOverhaul Team
 //---------------------------------------------------------------------------------------
 
 class X2DownloadableContentInfo_SquadSelectAtAnyTime extends X2DownloadableContentInfo;

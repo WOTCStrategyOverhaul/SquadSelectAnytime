@@ -1,3 +1,12 @@
+//---------------------------------------------------------------------------------------
+//  AUTHOR:  Xymanek
+//  PURPOSE: This class is used to cleanup after SS for fake mission has been closed.
+//           A separate class is required since XComHQ.MissionRef is 0 when SS is being
+//           removed and closures aren't a thing in UC
+//---------------------------------------------------------------------------------------
+//  WOTCStrategyOverhaul Team
+//---------------------------------------------------------------------------------------
+
 class SSAAT_DummyMissionRemover extends UIPanel;
 
 var int MissionObjectId;

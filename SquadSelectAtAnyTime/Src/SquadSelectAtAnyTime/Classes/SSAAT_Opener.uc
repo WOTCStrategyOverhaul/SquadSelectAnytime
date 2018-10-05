@@ -1,3 +1,11 @@
+//---------------------------------------------------------------------------------------
+//  AUTHOR:  Xymanek
+//  PURPOSE: This class contains the logic that creates the fake mission and opens
+//           opens the Squad Select screen for said mission
+//---------------------------------------------------------------------------------------
+//  WOTCStrategyOverhaul Team
+//---------------------------------------------------------------------------------------
+
 class SSAAT_Opener extends Object;
 
 static function ShowSquadSelect() {

@@ -1,3 +1,10 @@
+//---------------------------------------------------------------------------------------
+//  AUTHOR:  Xymanek
+//  PURPOSE: This class is used to add a button to "Armory" menu to open the Squad Select
+//---------------------------------------------------------------------------------------
+//  WOTCStrategyOverhaul Team
+//---------------------------------------------------------------------------------------
+
 class SSAAT_Listener_AvengerHud extends UIScreenListener;
 
 var localized string Button_Label;

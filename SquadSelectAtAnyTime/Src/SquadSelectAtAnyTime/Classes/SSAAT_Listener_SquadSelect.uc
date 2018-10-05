@@ -1,3 +1,11 @@
+//---------------------------------------------------------------------------------------
+//  AUTHOR:  Xymanek
+//  PURPOSE: This class is used to hook into Squad Select when it is initialized
+//           if the fake mission is currently in use
+//---------------------------------------------------------------------------------------
+//  WOTCStrategyOverhaul Team
+//---------------------------------------------------------------------------------------
+
 class SSAAT_Listener_SquadSelect extends UIScreenListener;
 
 event OnInit(UIScreen Screen)
