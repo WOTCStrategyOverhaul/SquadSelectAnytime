@@ -31,3 +31,13 @@ static function SSAAT_SquadSelectConfiguration GetCurrentConfiguration()
 
 	return DataHolder.Configuartion;
 }
+
+static function UISquadSelect GetSquadSelect()
+{
+	return GetSquadSelectFromStack(`HQPRES.ScreenStack);
+}
+
+static function UISquadSelect GetSquadSelectFromStack(UIScreenStack ScreenStack)
+{
+	return UISquadSelect(ScreenStack.GetFirstInstanceOf(class'UISquadSelect'));
+}

@@ -116,24 +116,35 @@ function SetSlots(array<SSAAT_SlotConfiguration> InSlots)
 	// No foreach cuz we might change the contents of the array
 	for(i = 0; i < InSlots.Length; i++)
 	{
-		// Check staff type
-		if (
-			InSlots[i].PersonnelType != eUIPersonnel_Soldiers && 
-			InSlots[i].PersonnelType != eUIPersonnel_Scientists && 
-			InSlots[i].PersonnelType != eUIPersonnel_Engineers
-		) {
-			`ReportError(InSlots[i].PersonnelType @ "is not supported by SSAAT_SlotConfiguration, defaulting to eUIPersonnel_Soldiers");
-			InSlots[i].PersonnelType = eUIPersonnel_Soldiers;
-		}
-
-		// check delegate
-		if (InSlots[i].CanUnitBeSelectedFn == none) {
-			`ReportError("Slot" @ i @ "has no CanUnitBeSelectedFn set, defaulting to base Squad Select behaviour");
-			InSlots[i].CanUnitBeSelectedFn = static.DefaultCanSoldierBeSelected;
-		}
+		InternalValidateSlot(InSlots[i]);
 	}
 
 	Slots = InSlots;
+}
+
+function SetSlot(int i, SSAAT_SlotConfiguration InSlot)
+{
+	InternalValidateSlot(InSlot);
+	Slots[i] = InSlot;
+}
+
+function protected InternalValidateSlot(out SSAAT_SlotConfiguration InSlot)
+{
+	// Check staff type
+	if (
+		InSlot.PersonnelType != eUIPersonnel_Soldiers && 
+		InSlot.PersonnelType != eUIPersonnel_Scientists && 
+		InSlot.PersonnelType != eUIPersonnel_Engineers
+	) {
+		`ReportError(InSlot.PersonnelType @ "is not supported by SSAAT_SlotConfiguration, defaulting to eUIPersonnel_Soldiers");
+		InSlot.PersonnelType = eUIPersonnel_Soldiers;
+	}
+
+	// check delegate
+	if (InSlot.CanUnitBeSelectedFn == none) {
+		`ReportError("Slot has no CanUnitBeSelectedFn set, defaulting to base Squad Select behaviour");
+		InSlot.CanUnitBeSelectedFn = static.DefaultCanSoldierBeSelected;
+	}
 }
 
 static function bool DefaultCanSoldierBeSelected(XComGameState_Unit Unit)

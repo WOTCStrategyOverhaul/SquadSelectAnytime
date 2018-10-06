@@ -38,7 +38,7 @@ static function ShowSquadSelect(optional SSAAT_SquadSelectConfiguration Configur
 	NewGameState = class'XComGameStateContext_ChangeContainer'.static.CreateChangeState("SSAAT: Show squad select for fake mission");
 	XComHQ = XComGameState_HeadquartersXCom(History.GetSingleGameStateObjectForClass(class'XComGameState_HeadquartersXCom'));
 
-	MissionState = BuildMissionSite(NewGameState);
+	MissionState = BuildMissionSite(NewGameState, Configuration);
 	XComHQ = XComGameState_HeadquartersXCom(NewGameState.ModifyStateObject(class'XComGameState_HeadquartersXCom', XComHQ.ObjectID));
 
 	MissionReference.ObjectID = MissionState.ObjectID;
@@ -58,7 +58,7 @@ static function ShowSquadSelect(optional SSAAT_SquadSelectConfiguration Configur
 	DataHolder.RegisterOnRemovedCallback(TheScreen);
 }
 
-static protected function XComGameState_MissionSite BuildMissionSite(XComGameState NewGameState) 
+static protected function XComGameState_MissionSite BuildMissionSite(XComGameState NewGameState, SSAAT_SquadSelectConfiguration Configuration) 
 {
 	local X2StrategyElementTemplateManager StratMgr;
 	local X2MissionSourceTemplate MissionSource;
@@ -84,6 +84,7 @@ static protected function XComGameState_MissionSite BuildMissionSite(XComGameSta
 	MissionState.Rewards.AddItem(RewardState.GetReference());
 	MissionState.ManualDifficultySetting = 1;
 	MissionState.GeneratedMission.Mission.MissionName = 'SSAAT_FakeMission';
+	MissionState.GeneratedMission.Mission.MaxSoldiers = Configuration.GetNumSlots();
 	MissionState.GeneratedMission.BattleOpName = "Squad select (no mission)";
 
 	return MissionState;
@@ -91,7 +92,7 @@ static protected function XComGameState_MissionSite BuildMissionSite(XComGameSta
 
 static protected function UISquadSelect GetSquadSelectFromStack(XComHQPresentationLayer HQPres)
 {
-	return UISquadSelect(HQPres.ScreenStack.GetFirstInstanceOf(class'UISquadSelect'));
+	return class'SSAAT_Helpers'.static.GetSquadSelectFromStack(HQPres.ScreenStack);
 }
 
 static protected function ClearExistingDataHolder()

@@ -40,6 +40,9 @@
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Listener_AvengerHud.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Listener_UIPersonnel_SquadSelect.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_MissionSet.uc">
       <SubType>Content</SubType>
     </Content>
@@ -53,6 +56,9 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_SquadSelectConfiguration.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_UIPersonnel_Select.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\X2DownloadableContentInfo_SquadSelectAtAnyTime.uc" />
