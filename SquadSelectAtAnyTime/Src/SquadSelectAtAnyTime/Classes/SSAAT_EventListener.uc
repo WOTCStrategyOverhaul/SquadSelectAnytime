@@ -6,18 +6,19 @@
 //  WOTCStrategyOverhaul Team
 //---------------------------------------------------------------------------------------
 
-class SSAAT_EventListener extends X2EventListener;
+class SSAAT_EventListener extends X2EventListener dependson(SSAAT_SquadSelectConfiguration);
 
 static function array<X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
 
 	Templates.AddItem(CreatePreventNarrativeEvents());
+	Templates.AddItem(CreateSquadSelectExtraInfo());
 
 	return Templates;
 }
 
-// OnSizeLimitedSquadSelect
+// PreventNarrativeEvents
 
 static function CHEventListenerTemplate CreatePreventNarrativeEvents()
 {
@@ -53,4 +54,58 @@ static protected function EventListenerReturn OnSuperSizeSquadSelect(Object Even
 	if (!Configuration.ShouldPreventOnSuperSizeEvent()) return ELR_NoInterrupt;
 
 	return ELR_InterruptListeners;
+}
+
+// rjSquadSelect_ExtraInfo
+
+static function CHEventListenerTemplate CreateSquadSelectExtraInfo()
+{
+	local CHEventListenerTemplate Template;
+
+	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'SSAAT_rjSquadSelect_ExtraInfo');
+	Template.AddCHEvent('rjSquadSelect_ExtraInfo', AddSquadSelectSlotNotes);
+	Template.RegisterInStrategy = true;
+
+	return Template;
+}
+
+static protected function EventListenerReturn AddSquadSelectSlotNotes(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local LWTuple Tuple;
+	local int SlotIndex;
+
+	local array<SSAAT_SlotNote> Notes;
+	local LWTuple NoteTuple;
+	local LWTValue Value;
+	local int i;
+
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+	Tuple = LWTuple(EventData);
+	
+	// Check that we are interested in actually doing something
+	if (Configuration == none || Tuple == none || Tuple.Id != 'rjSquadSelect_ExtraInfo') return ELR_NoInterrupt;
+
+	SlotIndex = Tuple.Data[0].i;
+	Notes = Configuration.GetSlotConfiguration(SlotIndex).Notes;
+
+    Value.kind = LWTVObject;
+    for (i = 0; i < Notes.Length; ++i)
+    {
+        NoteTuple = new class'LWTuple';
+
+        NoteTuple.Data[0].kind = LWTVString;
+        NoteTuple.Data[0].s = Notes[i].Text;
+        
+		NoteTuple.Data[1].kind = LWTVString;
+        NoteTuple.Data[1].s = Notes[i].TextColor;
+        
+		NoteTuple.Data[2].kind = LWTVString;
+        NoteTuple.Data[2].s = Notes[i].BGColor;
+
+        Value.o = NoteTuple;
+        Tuple.Data.AddItem(Value);
+    }
+
+	return ELR_NoInterrupt;
 }

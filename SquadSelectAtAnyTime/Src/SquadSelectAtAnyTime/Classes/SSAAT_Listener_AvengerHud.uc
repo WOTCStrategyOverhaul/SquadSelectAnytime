@@ -45,6 +45,10 @@ static protected function OnButtonClicked(optional StateObjectReference Facility
 
 	//Slots[2].PersonnelType = eUIPersonnel_Scientists;
 	Slots[2].CanUnitBeSelectedFn = IsMajorAndCanGoOnMission;
+	Slots[2].Notes.Length = 1;
+	Slots[2].Notes[0].Text = "Rank required: Major";
+	Slots[2].Notes[0].TextColor = "000000";
+	Slots[2].Notes[0].BGColor = "fdce2b";
 
 	Configuration.SetSlots(Slots);
 	Configuration.SetFrozen();
