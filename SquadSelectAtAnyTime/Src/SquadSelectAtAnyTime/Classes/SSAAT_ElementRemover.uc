@@ -6,13 +6,7 @@
 //  WOTCStrategyOverhaul Team
 //---------------------------------------------------------------------------------------
 
-class SSAAT_ElementRemover extends UIPanel config(SSAAT);
-
-var config array<name> PanelsToRemove;
-var config array<name> PanelsToHide;
-
-var config bool HideMissionInfo;
-var config bool HideLaunchButton;
+class SSAAT_ElementRemover extends UIPanel;
 
 simulated function InitRemover() 
 {
@@ -34,19 +28,25 @@ simulated function UISquadSelect GetParentSquadSelect()
 
 simulated protected function DoRemoval()
 {
+	local SSAAT_SquadSelectConfiguration Configuration;
 	local UISquadSelect SquadSelect;
+
+	local array<name> Panels;
 	local UIPanel ChildPanel;
 	local name ChildName;
 
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
 	SquadSelect = GetParentSquadSelect();
 
-	foreach PanelsToRemove(ChildName) {
+	Panels = Configuration.GetPanelsToRemove();
+	foreach Panels(ChildName) {
 		ChildPanel = SquadSelect.GetChildByName(ChildName, false);
 
 		if (ChildPanel != none) ChildPanel.Remove();
 	}
 
-	foreach PanelsToHide(ChildName) {
+	Panels = Configuration.GetPanelsToHide();
+	foreach Panels(ChildName) {
 		ChildPanel = SquadSelect.GetChildByName(ChildName, false);
 
 		if (ChildPanel != none) ChildPanel.Hide();
@@ -54,8 +54,8 @@ simulated protected function DoRemoval()
 
 	// Mission info and launch button need to be hidden via property as they uses auto-generated names
 	// They aren't destroyed since that will cause "none accessed errors"
-	if(HideMissionInfo) SquadSelect.m_kMissionInfo.Hide();
-	if(HideLaunchButton) SquadSelect.LaunchButton.Hide();
+	if(Configuration.ShouldHideMissionInfo()) SquadSelect.m_kMissionInfo.Hide();
+	if(!Configuration.ShouldShowLaunchButton()) SquadSelect.LaunchButton.Hide();
 
 	// We are no longer needed
 	Destroy();

@@ -16,9 +16,6 @@
     <Folder Include="Src\SquadSelectAtAnyTime\Classes\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\XComSSAAT.ini">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="Localization\SquadSelectAtAnyTime.int">
       <SubType>Content</SubType>
     </Content>
@@ -37,10 +34,10 @@
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_ElementRemover.uc">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Listener_AvengerHud.uc">
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Helpers.uc">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Listener_SquadSelect.uc">
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Listener_AvengerHud.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_MissionSet.uc">
@@ -50,6 +47,9 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Opener.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_SessionDataHolder.uc">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_SquadSelectConfiguration.uc">

@@ -9,11 +9,18 @@
 
 class SSAAT_SquadSelectConfiguration extends Object;
 
+struct SSAAT_SlotNote
+{
+	var string Text;
+	var string TextColor;
+	var string BGColor;
+};
+
 struct SSAAT_SlotConfiguration
 {
 	var EUIPersonnelType PersonnelType;
 	var delegate<CanUnitBeSelected> CanUnitBeSelectedFn;
-	var array<string> Notes;
+	var array<SSAAT_SlotNote> Notes;
 };
 
 // Slots
