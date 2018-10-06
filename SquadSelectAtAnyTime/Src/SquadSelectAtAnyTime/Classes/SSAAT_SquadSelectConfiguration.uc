@@ -34,8 +34,15 @@ var protected array<name> PanelsToRemove;
 var protected array<name> PanelsToHide;
 var protected bool bHideMissionInfo;
 
+// Disable narratives/events
+var protected bool bPreventOnSizeLimitedEvent;
+var protected bool bPreventOnSuperSizeEvent;
+
 // Frozen state (configuration is complete)
 var private bool bIsFrozen;
+
+// Useful the configuration was created via CreateWithDefaults and then you want to modify aspects
+var bool bDisableGetBeforeFreezeWarning;
 
 // Delegate declarations
 delegate bool CanUnitBeSelected(XComGameState_Unit Unit);
@@ -44,7 +51,7 @@ delegate bool CanClickLaunch();
 // Error checking helpers
 `define ReportError(error) `REDSCREEN(`error); `REDSCREEN(GetScriptTrace());
 `define EnsureNotFrozenForSetter if (bIsFrozen) {`ReportError("Cannot edit SSAAT_SquadSelectConfiguration after it was frozen"); return;}
-`define WarnNotFrozenForGetter `log("Warning: SSAAT_SquadSelectConfiguration is not intended to be read before being frozen", !bIsFrozen, 'SSAAT')
+`define WarnNotFrozenForGetter `log("Warning: SSAAT_SquadSelectConfiguration is not intended to be read before being frozen", !bIsFrozen && !bDisableGetBeforeFreezeWarning, 'SSAAT')
 
 static function SSAAT_SquadSelectConfiguration CreateWithDefaults()
 {
@@ -55,6 +62,9 @@ static function SSAAT_SquadSelectConfiguration CreateWithDefaults()
 	Configuration.SetDefaultSlots();
 	Configuration.SetHideMissionInfo(true);
 	Configuration.RemoveTerrainAndEnemiesPanels();
+	
+	Configuration.SetPreventOnSizeLimitedEvent(true);
+	Configuration.SetPreventOnSuperSizeEvent(true);
 
 	return Configuration;
 }
@@ -287,6 +297,38 @@ function AddPanelsToHide(array<name> Panels)
 			PanelsToHide.AddItem(Panel);
 		}
 	}
+}
+
+////////////////////////////////////
+/// EVENT INTERCEPTION - GETTERS ///
+////////////////////////////////////
+
+function bool ShouldPreventOnSizeLimitedEvent()
+{
+	`WarnNotFrozenForGetter;
+	return bPreventOnSizeLimitedEvent;
+}
+
+function bool ShouldPreventOnSuperSizeEvent()
+{
+	`WarnNotFrozenForGetter;
+	return bPreventOnSuperSizeEvent;
+}
+
+////////////////////////////////////
+/// EVENT INTERCEPTION - SETTERS ///
+////////////////////////////////////
+
+function SetPreventOnSizeLimitedEvent(bool NewValue)
+{
+	`EnsureNotFrozenForSetter;
+	bPreventOnSizeLimitedEvent = NewValue;
+}
+
+function SetPreventOnSuperSizeEvent(bool NewValue)
+{
+	`EnsureNotFrozenForSetter;
+	bPreventOnSuperSizeEvent = NewValue;
 }
 
 //////////////////////////////

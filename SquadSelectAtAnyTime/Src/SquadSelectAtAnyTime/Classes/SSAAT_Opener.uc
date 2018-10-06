@@ -54,7 +54,7 @@ static function ShowSquadSelect(optional SSAAT_SquadSelectConfiguration Configur
 	HQPres.UISquadSelect();
 	TheScreen = GetSquadSelectFromStack(HQPres);
 
-	PostSquadSelectInit(TheScreen);
+	PostSquadSelectInit(TheScreen, Configuration);
 	DataHolder.RegisterOnRemovedCallback(TheScreen);
 }
 
@@ -108,7 +108,7 @@ static protected function ClearExistingDataHolder()
 	}
 }
 
-static protected function PostSquadSelectInit(UISquadSelect SquadSelect)
+static protected function PostSquadSelectInit(UISquadSelect SquadSelect, SSAAT_SquadSelectConfiguration Configuration)
 {
 	local SSAAT_ElementRemover ElementRemover;
 	local SSAAT_DummyMissionRemover MissionRemover;
@@ -119,4 +119,41 @@ static protected function PostSquadSelectInit(UISquadSelect SquadSelect)
 	MissionRemover = SquadSelect.Spawn(class'SSAAT_DummyMissionRemover', SquadSelect);
 	MissionRemover.MissionObjectId = SquadSelect.XComHQ.MissionRef.ObjectID;
 	MissionRemover.InitPanel();
+
+	//TODO: This requires direct dependcy on rb's SS since he changed the UIList_SquadEditor completely, or an event
+	//UpdateSelectSoldierLabels(SquadSelect.m_kSlotList, Configuration);
+}
+
+static protected function UpdateSelectSoldierLabels(UIList_SquadEditor SquadList, SSAAT_SquadSelectConfiguration Configuration)
+{
+	local array<SSAAT_SlotConfiguration> Slots;
+	local SSAAT_SlotConfiguration Slot;
+
+	local UISquadSelect_ListItem Item;
+	local string Label;
+	local int i;
+
+	Slots = Configuration.GetSlots();
+
+	foreach Slots(Slot, i)
+	{
+		if (Slot.PersonnelType == eUIPersonnel_Soldiers) continue;
+
+		switch(Slot.PersonnelType)
+		{
+			case eUIPersonnel_Scientists:
+				Label = "Select Scientist";
+				break;
+
+			case eUIPersonnel_Engineers:
+				Label = "Select Engineer";
+				break;
+		}
+
+		Item = UISquadSelect_ListItem(SquadList.GetItem(i));
+		Item.m_strSelectUnit = Label;
+
+		// Force update in case the button is already shown
+		Item.AS_SetEmpty(Label);
+	}
 }

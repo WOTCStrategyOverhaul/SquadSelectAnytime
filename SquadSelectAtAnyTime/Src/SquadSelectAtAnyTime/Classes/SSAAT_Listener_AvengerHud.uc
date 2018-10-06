@@ -32,6 +32,8 @@ static protected function OnButtonClicked(optional StateObjectReference Facility
 	local array<SSAAT_SlotConfiguration> Slots;
 
 	Configuration = class'SSAAT_SquadSelectConfiguration'.static.CreateWithDefaults();
+	Configuration.bDisableGetBeforeFreezeWarning = true;
+
 	Slots = Configuration.GetSlots();
 	Slots.Length = 3;
 
