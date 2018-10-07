@@ -13,7 +13,7 @@ static function array<X2DataTemplate> CreateTemplates()
 	local array<X2DataTemplate> Templates;
 
 	Templates.AddItem(CreatePreventNarrativeEvents());
-	Templates.AddItem(CreateSquadSelectExtraInfo());
+	Templates.AddItem(CreateRoboSquadSelectHooks());
 
 	return Templates;
 }
@@ -56,14 +56,15 @@ static protected function EventListenerReturn OnSuperSizeSquadSelect(Object Even
 	return ELR_InterruptListeners;
 }
 
-// rjSquadSelect_ExtraInfo
+// rjSquadSelect
 
-static function CHEventListenerTemplate CreateSquadSelectExtraInfo()
+static function CHEventListenerTemplate CreateRoboSquadSelectHooks()
 {
 	local CHEventListenerTemplate Template;
 
-	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'SSAAT_rjSquadSelect_ExtraInfo');
-	Template.AddCHEvent('rjSquadSelect_ExtraInfo', AddSquadSelectSlotNotes);
+	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'SSAAT_RoboSquadSelectHooks');
+	Template.AddCHEvent('rjSquadSelect_ExtraInfo', AddSquadSelectSlotNotes, ELD_Immediate);
+	Template.AddCHEvent('rjSquadSelect_SelectUnitString', ModifySelectUnitString, ELD_Immediate);
 	Template.RegisterInStrategy = true;
 
 	return Template;
@@ -93,6 +94,7 @@ static protected function EventListenerReturn AddSquadSelectSlotNotes(Object Eve
     for (i = 0; i < Notes.Length; ++i)
     {
         NoteTuple = new class'LWTuple';
+		NoteTuple.Data.Length = 3;
 
         NoteTuple.Data[0].kind = LWTVString;
         NoteTuple.Data[0].s = Notes[i].Text;
@@ -106,6 +108,37 @@ static protected function EventListenerReturn AddSquadSelectSlotNotes(Object Eve
         Value.o = NoteTuple;
         Tuple.Data.AddItem(Value);
     }
+
+	return ELR_NoInterrupt;
+}
+
+static protected function EventListenerReturn ModifySelectUnitString(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local LWTuple Tuple;
+	local int SlotIndex;
+	
+	local EUIPersonnelType PersonnelType;
+
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+	Tuple = LWTuple(EventData);
+	
+	// Check that we are interested in actually doing something
+	if (Configuration == none || Tuple == none || Tuple.Id != 'rjSquadSelect_SelectUnitString') return ELR_NoInterrupt;
+
+	SlotIndex = Tuple.Data[0].i;
+	PersonnelType = Configuration.GetSlotConfiguration(SlotIndex).PersonnelType;
+
+	switch(PersonnelType)
+	{
+		case eUIPersonnel_Scientists:
+			Tuple.Data[1].s = "Select Scientist";
+			break;
+
+		case eUIPersonnel_Engineers:
+			Tuple.Data[1].s = "Select Engineer";
+			break;
+	}
 
 	return ELR_NoInterrupt;
 }
