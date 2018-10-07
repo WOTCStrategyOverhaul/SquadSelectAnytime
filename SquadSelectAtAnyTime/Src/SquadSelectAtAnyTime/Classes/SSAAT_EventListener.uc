@@ -132,11 +132,11 @@ static protected function EventListenerReturn ModifySelectUnitString(Object Even
 	switch(PersonnelType)
 	{
 		case eUIPersonnel_Scientists:
-			Tuple.Data[1].s = "Select Scientist";
+			Tuple.Data[1].s = class'UIPersonnel_ChooseResearch'.default.m_strTitle;
 			break;
 
 		case eUIPersonnel_Engineers:
-			Tuple.Data[1].s = "Select Engineer";
+			Tuple.Data[1].s = class'UIPersonnel_BuildFacility'.default.m_strTitle;
 			break;
 	}
 
