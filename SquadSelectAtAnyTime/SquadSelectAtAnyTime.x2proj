@@ -21,9 +21,6 @@
     <Content Include="Localization\SquadSelectAtAnyTime.int">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Localization\XComSSAAT.int">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="ReadMe.txt" />
     <Content Include="ModPreview.jpg" />
     <Content Include="Config\XComEditor.ini" />

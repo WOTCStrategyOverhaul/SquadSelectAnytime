@@ -10,6 +10,9 @@ class SSAAT_Listener_AvengerHud extends UIScreenListener dependson(SSAAT_SquadSe
 var localized string Button_Label;
 var localized string Button_Description;
 
+var localized string ButtonAdvanced_Label;
+var localized string ButtonAdvanced_Description;
+
 event OnInit(UIScreen Screen)
 {
 	local UIAvengerHUD AvengerHud;
@@ -18,15 +21,29 @@ event OnInit(UIScreen Screen)
 	AvengerHud = UIAvengerHUD(Screen);
 	if (AvengerHud == none) return;
 
+	// Create button for simple
 	MenuItem.Id = 'SSAAT_OpenSquadSelect';
 	MenuItem.Message.Label = Button_Label;
 	MenuItem.Message.Description = Button_Description;
-	MenuItem.Message.OnItemClicked = OnButtonClicked;
+	MenuItem.Message.OnItemClicked = OnButtonClickedSimple;
+
+	AvengerHud.Shortcuts.AddSubMenu(eUIAvengerShortcutCat_Barracks, MenuItem);
+
+	// Create button for advanced
+	MenuItem.Id = 'SSAAT_OpenSquadSelect_Advanced';
+	MenuItem.Message.Label = ButtonAdvanced_Label;
+	MenuItem.Message.Description = ButtonAdvanced_Description;
+	MenuItem.Message.OnItemClicked = OnButtonClickedAdvanced;
 
 	AvengerHud.Shortcuts.AddSubMenu(eUIAvengerShortcutCat_Barracks, MenuItem);
 }
 
-static protected function OnButtonClicked(optional StateObjectReference Facility)
+static protected function OnButtonClickedSimple(optional StateObjectReference Facility)
+{
+	class'SSAAT_Opener'.static.ShowSquadSelect();
+}
+
+static protected function OnButtonClickedAdvanced(optional StateObjectReference Facility)
 {
 	local SSAAT_SquadSelectConfiguration Configuration;
 	local array<SSAAT_SlotConfiguration> Slots;

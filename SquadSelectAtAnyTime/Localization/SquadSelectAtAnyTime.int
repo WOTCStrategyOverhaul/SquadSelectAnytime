@@ -1,3 +1,6 @@
 [SSAAT_Listener_AvengerHud]
 Button_Label="Open Squad Select"
 Button_Description="Open Squad Select screen without going to a mission"
+
+ButtonAdvanced_Label="Open Squad Select (advanced)"
+ButtonAdvanced_Description="Open Squad Select screen and showcase some of the more advanced features this mod brings<br/>These features are intended to be used by other mods"
