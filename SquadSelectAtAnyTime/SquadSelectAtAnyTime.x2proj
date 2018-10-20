@@ -7,6 +7,7 @@
     <SteamPublishID>0</SteamPublishID>
     <AssemblyName>SquadSelectAtAnyTime</AssemblyName>
     <RootNamespace>SquadSelectAtAnyTime</RootNamespace>
+	<ProjectGuid>{6346b63e-ebd7-4d66-9c0f-39a75f9fc7a5}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Config\" />
@@ -18,6 +19,9 @@
     <Folder Include="Src\SquadSelectAtAnyTime\Classes\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Config\XComSSAAT.ini">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Localization\SquadSelectAtAnyTime.int">
       <SubType>Content</SubType>
     </Content>

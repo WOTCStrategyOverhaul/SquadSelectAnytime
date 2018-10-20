@@ -5,13 +5,17 @@
 //  WOTCStrategyOverhaul Team
 //---------------------------------------------------------------------------------------
 
-class SSAAT_Listener_AvengerHud extends UIScreenListener dependson(SSAAT_SquadSelectConfiguration); 
+class SSAAT_Listener_AvengerHud extends UIScreenListener 
+	dependson(SSAAT_SquadSelectConfiguration)
+	config(SSAAT);
 
 var localized string Button_Label;
 var localized string Button_Description;
 
 var localized string ButtonAdvanced_Label;
 var localized string ButtonAdvanced_Description;
+
+var config bool ShowAdvancedButton;
 
 event OnInit(UIScreen Screen)
 {
@@ -29,13 +33,15 @@ event OnInit(UIScreen Screen)
 
 	AvengerHud.Shortcuts.AddSubMenu(eUIAvengerShortcutCat_Barracks, MenuItem);
 
-	// Create button for advanced
-	MenuItem.Id = 'SSAAT_OpenSquadSelect_Advanced';
-	MenuItem.Message.Label = ButtonAdvanced_Label;
-	MenuItem.Message.Description = ButtonAdvanced_Description;
-	MenuItem.Message.OnItemClicked = OnButtonClickedAdvanced;
+	if (default.ShowAdvancedButton) {
+		// Create button for advanced
+		MenuItem.Id = 'SSAAT_OpenSquadSelect_Advanced';
+		MenuItem.Message.Label = ButtonAdvanced_Label;
+		MenuItem.Message.Description = ButtonAdvanced_Description;
+		MenuItem.Message.OnItemClicked = OnButtonClickedAdvanced;
 
-	AvengerHud.Shortcuts.AddSubMenu(eUIAvengerShortcutCat_Barracks, MenuItem);
+		AvengerHud.Shortcuts.AddSubMenu(eUIAvengerShortcutCat_Barracks, MenuItem);
+	}
 }
 
 static protected function OnButtonClickedSimple(optional StateObjectReference Facility)
