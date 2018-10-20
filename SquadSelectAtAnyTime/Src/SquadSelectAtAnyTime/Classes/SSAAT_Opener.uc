@@ -8,7 +8,7 @@
 
 class SSAAT_Opener extends Object;
 
-static function ShowSquadSelect(optional SSAAT_SquadSelectConfiguration Configuration) {
+static function UISquadSelect ShowSquadSelect(optional SSAAT_SquadSelectConfiguration Configuration) {
 	local XComGameStateHistory History;
 	local XComGameState NewGameState;
 
@@ -26,7 +26,7 @@ static function ShowSquadSelect(optional SSAAT_SquadSelectConfiguration Configur
 	if (GetSquadSelectFromStack(HQPres) != none)
 	{
 		`REDSCREEN("SSAAT_Opener called when there is a UISquadSelect already on the stack. I have no idea what you are trying to achieve but I'm not going to do ANYTHING to avoid breaking other stuff");
-		return;
+		return none;
 	}
 
 	if (Configuration == none)
@@ -56,6 +56,8 @@ static function ShowSquadSelect(optional SSAAT_SquadSelectConfiguration Configur
 
 	PostSquadSelectInit(TheScreen, Configuration);
 	DataHolder.RegisterOnRemovedCallback(TheScreen);
+
+	return TheScreen;
 }
 
 static protected function XComGameState_MissionSite BuildMissionSite(XComGameState NewGameState, SSAAT_SquadSelectConfiguration Configuration) 
@@ -72,7 +74,7 @@ static protected function XComGameState_MissionSite BuildMissionSite(XComGameSta
 	RewardTemplate = X2RewardTemplate(StratMgr.FindStrategyElementTemplate('Reward_None'));
 
 	// Create stuff
-	MissionState = XComGameState_MissionSite(NewGameState.CreateNewStateObject(class'XComGameState_MissionSite'));
+	MissionState = XComGameState_MissionSite(NewGameState.CreateNewStateObject(class'SSAAT_FakeMissionSite'));
 	RewardState = RewardTemplate.CreateInstanceFromTemplate(NewGameState);
 
 	// Fill in XComGameState_MissionSite

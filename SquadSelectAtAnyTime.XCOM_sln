@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # XCOM ModBuddy Solution File, Format Version 11.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "SquadSelectAtAnyTime", "SquadSelectAtAnyTime\SquadSelectAtAnyTime.x2proj", "{4474A6F0-F47B-4607-AF22-896BAEBFDDA8}"
+Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "SquadSelectAtAnyTime", "SquadSelectAtAnyTime\SquadSelectAtAnyTime.x2proj", "{DB66C083-BD59-4B7C-A1E7-3002CACCE3D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|XCOM 2 = Default|XCOM 2
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4474A6F0-F47B-4607-AF22-896BAEBFDDA8}.Default|XCOM 2.ActiveCfg = Default|XCOM 2
-		{4474A6F0-F47B-4607-AF22-896BAEBFDDA8}.Default|XCOM 2.Build.0 = Default|XCOM 2
+		{DB66C083-BD59-4B7C-A1E7-3002CACCE3D2}.Default|XCOM 2.ActiveCfg = Default|XCOM 2
+		{DB66C083-BD59-4B7C-A1E7-3002CACCE3D2}.Default|XCOM 2.Build.0 = Default|XCOM 2
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

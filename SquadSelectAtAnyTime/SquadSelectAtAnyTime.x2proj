@@ -39,6 +39,9 @@
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_EventListener.uc">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_FakeMissionSite.uc">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_Helpers.uc">
       <SubType>Content</SubType>
     </Content>
