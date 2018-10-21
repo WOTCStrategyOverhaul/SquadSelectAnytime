@@ -7,9 +7,12 @@ Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "SquadSelectAtAnyTime", "Squ
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|XCOM 2 = Debug|XCOM 2
 		Default|XCOM 2 = Default|XCOM 2
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6346B63E-EBD7-4D66-9C0F-39A75F9FC7A5}.Debug|XCOM 2.ActiveCfg = Debug|XCOM 2
+		{6346B63E-EBD7-4D66-9C0F-39A75F9FC7A5}.Debug|XCOM 2.Build.0 = Debug|XCOM 2
 		{6346B63E-EBD7-4D66-9C0F-39A75F9FC7A5}.Default|XCOM 2.ActiveCfg = Default|XCOM 2
 		{6346B63E-EBD7-4D66-9C0F-39A75F9FC7A5}.Default|XCOM 2.Build.0 = Default|XCOM 2
 	EndGlobalSection
