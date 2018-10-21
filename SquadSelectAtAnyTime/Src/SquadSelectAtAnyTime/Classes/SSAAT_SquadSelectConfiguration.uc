@@ -28,6 +28,8 @@ var protected array<SSAAT_SlotConfiguration> Slots;
 
 // Launch button
 var protected delegate<CanClickLaunch> CanClickLaunchFn;
+var protected delegate<OnLaunch> OnLaunchFn;
+var protected bool bShowSkyrangerTakeoff;
 
 // Removal of default UI elements
 var protected array<name> PanelsToRemove;
@@ -47,6 +49,7 @@ var bool bDisableGetBeforeFreezeWarning;
 // Delegate declarations
 delegate bool CanUnitBeSelected(XComGameState_Unit Unit);
 delegate bool CanClickLaunch();
+delegate OnLaunch();
 
 // Error checking helpers
 `define ReportError(error) `REDSCREEN(`error); `REDSCREEN(GetScriptTrace());
@@ -178,6 +181,18 @@ function GetCanClickLaunchFn(out delegate<CanClickLaunch> Fn)
 	Fn = CanClickLaunchFn;
 }
 
+function GetOnLaunchFn(out delegate<OnLaunch> Fn)
+{
+	`WarnNotFrozenForGetter;
+	Fn = OnLaunchFn;
+}
+
+function bool ShouldShowSkyrangerTakeoff()
+{
+	`WarnNotFrozenForGetter;
+	return bShowSkyrangerTakeoff;
+}
+
 ///////////////////////////////
 /// LAUNCH BUTTON - SETTERS ///
 ///////////////////////////////
@@ -186,6 +201,14 @@ function SetCanClickLaunchFn(delegate<CanClickLaunch> Fn)
 {
 	`EnsureNotFrozenForSetter;
 	CanClickLaunchFn = Fn;
+}
+
+function SetLaunchBehaviour(delegate<OnLaunch> Fn, bool ShowSkyrangerTakeoff)
+{
+	`EnsureNotFrozenForSetter;
+	
+	OnLaunchFn = Fn;
+	bShowSkyrangerTakeoff = ShowSkyrangerTakeoff;
 }
 
 ////////////////////////////

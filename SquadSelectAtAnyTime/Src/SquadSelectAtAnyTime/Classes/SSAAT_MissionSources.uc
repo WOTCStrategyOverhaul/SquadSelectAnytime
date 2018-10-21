@@ -28,6 +28,7 @@ static function X2DataTemplate CreateFakeMissionSource()
 	return Template;
 }
 
-static function bool CanLaunchFakeMission(XComGameState_MissionSite MissionState) {
+static function bool CanLaunchFakeMission(XComGameState_MissionSite MissionState) 
+{
 	return false;
 }
