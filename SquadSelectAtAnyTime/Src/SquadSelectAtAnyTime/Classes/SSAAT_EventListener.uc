@@ -65,6 +65,7 @@ static function CHEventListenerTemplate CreateRoboSquadSelectHooks()
 	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'SSAAT_RoboSquadSelectHooks');
 	Template.AddCHEvent('rjSquadSelect_ExtraInfo', AddSquadSelectSlotNotes, ELD_Immediate);
 	Template.AddCHEvent('rjSquadSelect_SelectUnitString', ModifySelectUnitString, ELD_Immediate);
+	Template.AddCHEvent('rjSquadSelect_UseCinematic', ConfigureDepartureCinematic, ELD_Immediate);
 	Template.RegisterInStrategy = true;
 
 	return Template;
@@ -139,6 +140,26 @@ static protected function EventListenerReturn ModifySelectUnitString(Object Even
 			Tuple.Data[1].s = class'UIPersonnel_BuildFacility'.default.m_strTitle;
 			break;
 	}
+
+	return ELR_NoInterrupt;
+}
+
+static protected function EventListenerReturn ConfigureDepartureCinematic(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local LWTuple Tuple;
+
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+	Tuple = LWTuple(EventData);
+	
+	// Check that we are interested in actually doing something
+	if (Configuration == none || Tuple == none || Tuple.Id != 'rjSquadSelect_UseCinematic') return ELR_NoInterrupt;
+
+	// Don't change anything if the button isn't supposed to be there
+	if (!Configuration.ShouldShowLaunchButton()) return ELR_NoInterrupt;
+
+	// We do not use the fadeout in any case
+	Tuple.Data[0].i = Configuration.ShouldShowSkyrangerTakeoff() ? 0 : 2;
 
 	return ELR_NoInterrupt;
 }
