@@ -8,6 +8,7 @@
 
 class SSAAT_UIPersonnel_Select extends UIPersonnel;
 
+var protected int SlotIndex;
 var protected SSAAT_SlotConfiguration SlotConfig;
 
 simulated function InitScreen(XComPlayerController InitController, UIMovie InitMovie, optional name InitName)
@@ -15,7 +16,8 @@ simulated function InitScreen(XComPlayerController InitController, UIMovie InitM
 	local UISquadSelect SquadSelect;
 
 	SquadSelect = class'SSAAT_Helpers'.static.GetSquadSelect();
-	SlotConfig = class'SSAAT_Helpers'.static.GetCurrentConfiguration().GetSlotConfiguration(SquadSelect.m_iSelectedSlot);
+	SlotIndex = SquadSelect.m_iSelectedSlot;
+	SlotConfig = class'SSAAT_Helpers'.static.GetCurrentConfiguration().GetSlotConfiguration(SlotIndex);
 
 	// This line needs to be before super.InitScreen
 	m_eListType = SlotConfig.PersonnelType;
@@ -32,7 +34,6 @@ simulated function UpdateList()
 
 	super.UpdateList();
 
-	// TODO: Covert ops accept StaffUnitInfo
 	CanUnitBeSelectedFn = SlotConfig.CanUnitBeSelectedFn;
 
 	// Disable any soldiers who are not eligible
@@ -41,11 +42,7 @@ simulated function UpdateList()
 		UnitItem = UIPersonnel_ListItem(m_kList.GetItem(i));
 		Unit = XComGameState_Unit(`XCOMHISTORY.GetGameStateForObjectID(UnitItem.UnitRef.ObjectID));
 
-		/*UnitInfo.UnitRef = Unit.GetReference();
-		UnitInfo.bGhostUnit = false;
-		UnitInfo.GhostLocation.ObjectID = 0;*/
-
-		if (!CanUnitBeSelectedFn(Unit))
+		if (!CanUnitBeSelectedFn(Unit, SlotIndex))
 		{
 			UnitItem.SetDisabled(true);
 		}

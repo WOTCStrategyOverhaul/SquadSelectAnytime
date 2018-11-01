@@ -79,12 +79,12 @@ static protected function OnButtonClickedAdvanced(optional StateObjectReference 
 	class'SSAAT_Opener'.static.ShowSquadSelect(Configuration);
 }
 
-static function bool CanCivilianBeSelected(XComGameState_Unit Unit)
+static function bool CanCivilianBeSelected(XComGameState_Unit Unit, int iSlot)
 {
 	return Unit.IsAlive() && Unit.IsActive(true);
 }
 
-static function bool IsMajorAndCanGoOnMission(XComGameState_Unit Unit)
+static function bool IsMajorAndCanGoOnMission(XComGameState_Unit Unit, int iSlot)
 {
-	return class'SSAAT_SquadSelectConfiguration'.static.DefaultCanSoldierBeSelected(Unit) && Unit.GetSoldierRank() > 5;
+	return class'SSAAT_SquadSelectConfiguration'.static.DefaultCanSoldierBeSelected(Unit, iSlot) && Unit.GetSoldierRank() > 5;
 }

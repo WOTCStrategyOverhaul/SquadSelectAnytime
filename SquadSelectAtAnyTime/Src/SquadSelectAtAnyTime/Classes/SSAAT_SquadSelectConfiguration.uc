@@ -47,7 +47,7 @@ var private bool bIsFrozen;
 var bool bDisableGetBeforeFreezeWarning;
 
 // Delegate declarations
-delegate bool CanUnitBeSelected(XComGameState_Unit Unit);
+delegate bool CanUnitBeSelected(XComGameState_Unit Unit, int iSlot);
 delegate bool CanClickLaunch();
 delegate OnLaunch();
 
@@ -160,7 +160,7 @@ function protected InternalValidateSlot(out SSAAT_SlotConfiguration InSlot)
 	}
 }
 
-static function bool DefaultCanSoldierBeSelected(XComGameState_Unit Unit)
+static function bool DefaultCanSoldierBeSelected(XComGameState_Unit Unit, int iSlot)
 {
 	return Unit.CanGoOnMission();
 }
