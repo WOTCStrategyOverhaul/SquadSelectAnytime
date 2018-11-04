@@ -23,6 +23,10 @@ struct SSAAT_SlotConfiguration
 	var array<SSAAT_SlotNote> Notes;
 };
 
+// Opening the screen
+var protected bool bDisallowAutoFill;
+var protected bool bSkipIntroAnimation;
+
 // Slots
 var protected array<SSAAT_SlotConfiguration> Slots;
 
@@ -43,7 +47,7 @@ var protected bool bPreventOnSuperSizeEvent;
 // Frozen state (configuration is complete)
 var private bool bIsFrozen;
 
-// Useful the configuration was created via CreateWithDefaults and then you want to modify aspects
+// Useful when the configuration was created via CreateWithDefaults and then you want to modify aspects
 var bool bDisableGetBeforeFreezeWarning;
 
 // Delegate declarations
@@ -70,6 +74,38 @@ static function SSAAT_SquadSelectConfiguration CreateWithDefaults()
 	Configuration.SetPreventOnSuperSizeEvent(true);
 
 	return Configuration;
+}
+
+////////////////////////////////////
+/// Opening the screen - getters ///
+////////////////////////////////////
+
+function bool ShouldDisallowAutoFill()
+{
+	`WarnNotFrozenForGetter;
+	return bDisallowAutoFill;
+}
+
+function bool ShouldSkipIntroAnimation()
+{
+	`WarnNotFrozenForGetter;
+	return bSkipIntroAnimation;
+}
+
+////////////////////////////////////
+/// Opening the screen - setters ///
+////////////////////////////////////
+
+function SetDisallowAutoFill(bool DisallowAutoFill)
+{
+	`EnsureNotFrozenForSetter;
+	bDisallowAutoFill = DisallowAutoFill;
+}
+
+function SetSkipIntroAnimation(bool SkipIntroAnimation)
+{
+	`EnsureNotFrozenForSetter;
+	bSkipIntroAnimation = SkipIntroAnimation;
 }
 
 ///////////////////////

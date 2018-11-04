@@ -18,7 +18,9 @@ static function array<X2DataTemplate> CreateTemplates()
 	return Templates;
 }
 
-// PreventNarrativeEvents
+////////////////////////////////
+/// Prevent narrative events ///
+////////////////////////////////
 
 static function CHEventListenerTemplate CreatePreventNarrativeEvents()
 {
@@ -56,17 +58,22 @@ static protected function EventListenerReturn OnSuperSizeSquadSelect(Object Even
 	return ELR_InterruptListeners;
 }
 
-// rjSquadSelect
+/////////////////////
+/// rjSquadSelect ///
+/////////////////////
 
 static function CHEventListenerTemplate CreateRoboSquadSelectHooks()
 {
 	local CHEventListenerTemplate Template;
 
 	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'SSAAT_RoboSquadSelectHooks');
+	Template.RegisterInStrategy = true;
+	
 	Template.AddCHEvent('rjSquadSelect_ExtraInfo', AddSquadSelectSlotNotes, ELD_Immediate);
 	Template.AddCHEvent('rjSquadSelect_SelectUnitString', ModifySelectUnitString, ELD_Immediate);
 	Template.AddCHEvent('rjSquadSelect_UseCinematic', ConfigureDepartureCinematic, ELD_Immediate);
-	Template.RegisterInStrategy = true;
+	Template.AddCHEvent('rjSquadSelect_AllowAutoFilling', AllowSquadAutoFill, ELD_Immediate);
+	Template.AddCHEvent('rjSquadSelect_UseIntro', ConfigureIntro, ELD_Immediate);
 
 	return Template;
 }
@@ -160,6 +167,38 @@ static protected function EventListenerReturn ConfigureDepartureCinematic(Object
 
 	// We do not use the fadeout in any case
 	Tuple.Data[0].i = Configuration.ShouldShowSkyrangerTakeoff() ? 0 : 2;
+
+	return ELR_NoInterrupt;
+}
+
+static protected function EventListenerReturn AllowSquadAutoFill(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local LWTuple Tuple;
+
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+	Tuple = LWTuple(EventData);
+	
+	// Check that we are interested in actually doing something
+	if (Configuration == none || Tuple == none || Tuple.Id != 'rjSquadSelect_AllowAutoFilling') return ELR_NoInterrupt;
+
+	Tuple.Data[0].b = !Configuration.ShouldDisallowAutoFill();
+
+	return ELR_NoInterrupt;
+}
+
+static protected function EventListenerReturn ConfigureIntro(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local LWTuple Tuple;
+
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+	Tuple = LWTuple(EventData);
+	
+	// Check that we are interested in actually doing something
+	if (Configuration == none || Tuple == none || Tuple.Id != 'rjSquadSelect_UseIntro') return ELR_NoInterrupt;
+
+	Tuple.Data[0].i = Configuration.ShouldSkipIntroAnimation() ? 1 : 0;
 
 	return ELR_NoInterrupt;
 }
