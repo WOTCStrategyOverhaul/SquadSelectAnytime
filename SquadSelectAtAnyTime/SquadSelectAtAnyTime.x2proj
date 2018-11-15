@@ -37,9 +37,6 @@
     <Content Include="Src\LW_Tuple\Classes\LWTuple.uc">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_DummyMissionRemover.uc">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="Src\SquadSelectAtAnyTime\Classes\SSAAT_ElementRemover.uc">
       <SubType>Content</SubType>
     </Content>

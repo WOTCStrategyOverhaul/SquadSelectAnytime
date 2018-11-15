@@ -58,5 +58,10 @@ simulated protected function DoRemoval()
 	if(!Configuration.ShouldShowLaunchButton()) SquadSelect.LaunchButton.Hide();
 
 	// We are no longer needed
-	Destroy();
+	Remove();
+}
+
+defaultproperties
+{
+	bIsNavigable = false;
 }

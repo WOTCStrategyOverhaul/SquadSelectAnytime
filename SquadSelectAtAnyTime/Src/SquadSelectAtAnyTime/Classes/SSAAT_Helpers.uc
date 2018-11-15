@@ -24,7 +24,7 @@ static function SSAAT_SquadSelectConfiguration GetCurrentConfiguration()
 {
 	local SSAAT_SessionDataHolder DataHolder;
 
-	DataHolder = GetCurrentDataHolder();
+	DataHolder = GetCurrentDataHolder(false);
 
 	// Avoid "none accessed" warnings
 	if (DataHolder == none) return none;

@@ -49,7 +49,7 @@ static function UISquadSelect ShowSquadSelect(optional SSAAT_SquadSelectConfigur
 	// Configure the data holder here, since we will need it for event listener
 	ClearExistingDataHolder();
 	DataHolder = HQPres.Spawn(class'SSAAT_SessionDataHolder', HQPres.m_kAvengerHUD);
-	DataHolder.InitDataHolder(Configuration);
+	DataHolder.InitDataHolder(Configuration, MissionState.ObjectID);
 
 	HQPres.UISquadSelect();
 	TheScreen = GetSquadSelectFromStack(HQPres);
@@ -106,7 +106,7 @@ static protected function ClearExistingDataHolder()
 	if (DataHolder != none)
 	{
 		`log("Warning: SSAAT_SessionDataHolder existing when opening SS - something went wrong with cleanup?",, 'SSAAT');
-		DataHolder.Remove();
+		DataHolder.DoCleanup();
 	}
 }
 
@@ -117,8 +117,4 @@ static protected function PostSquadSelectInit(UISquadSelect SquadSelect, SSAAT_S
 
 	ElementRemover = SquadSelect.Spawn(class'SSAAT_ElementRemover', SquadSelect);
 	ElementRemover.InitRemover();
-
-	MissionRemover = SquadSelect.Spawn(class'SSAAT_DummyMissionRemover', SquadSelect);
-	MissionRemover.MissionObjectId = SquadSelect.XComHQ.MissionRef.ObjectID;
-	MissionRemover.InitPanel();
 }
