@@ -130,6 +130,16 @@ function array<SSAAT_SlotConfiguration> GetSlots()
 	return Slots;
 }
 
+function bool IsUnitEligible(XComGameState_Unit Unit, int iSlot)
+{
+	local delegate<CanUnitBeSelected> CanUnitBeSelectedFn;
+
+	`WarnNotFrozenForGetter;
+
+	CanUnitBeSelectedFn = Slots[iSlot].CanUnitBeSelectedFn;
+	return CanUnitBeSelectedFn(Unit, iSlot);
+}
+
 ///////////////////////
 /// SLOTS - SETTERS ///
 ///////////////////////

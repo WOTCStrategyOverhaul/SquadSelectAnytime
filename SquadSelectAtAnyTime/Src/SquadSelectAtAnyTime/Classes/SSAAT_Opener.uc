@@ -113,7 +113,6 @@ static protected function ClearExistingDataHolder()
 static protected function PostSquadSelectInit(UISquadSelect SquadSelect, SSAAT_SquadSelectConfiguration Configuration)
 {
 	local SSAAT_ElementRemover ElementRemover;
-	local SSAAT_DummyMissionRemover MissionRemover;
 
 	ElementRemover = SquadSelect.Spawn(class'SSAAT_ElementRemover', SquadSelect);
 	ElementRemover.InitRemover();

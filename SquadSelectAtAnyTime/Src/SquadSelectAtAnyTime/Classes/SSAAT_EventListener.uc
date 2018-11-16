@@ -14,6 +14,7 @@ static function array<X2DataTemplate> CreateTemplates()
 
 	Templates.AddItem(CreatePreventNarrativeEvents());
 	Templates.AddItem(CreateRoboSquadSelectHooks());
+	Templates.AddItem(CreatePreScreenSetupEvents());
 
 	return Templates;
 }
@@ -74,6 +75,7 @@ static function CHEventListenerTemplate CreateRoboSquadSelectHooks()
 	Template.AddCHEvent('rjSquadSelect_UseCinematic', ConfigureDepartureCinematic, ELD_Immediate);
 	Template.AddCHEvent('rjSquadSelect_AllowAutoFilling', AllowSquadAutoFill, ELD_Immediate);
 	Template.AddCHEvent('rjSquadSelect_UseIntro', ConfigureIntro, ELD_Immediate);
+	Template.AddCHEvent('rjSquadSelect_AllowCollapseSquad', ConfigureSquadCollapse, ELD_Immediate);
 
 	return Template;
 }
@@ -199,6 +201,137 @@ static protected function EventListenerReturn ConfigureIntro(Object EventData, O
 	if (Configuration == none || Tuple == none || Tuple.Id != 'rjSquadSelect_UseIntro') return ELR_NoInterrupt;
 
 	Tuple.Data[0].i = Configuration.ShouldSkipIntroAnimation() ? 1 : 0;
+
+	return ELR_NoInterrupt;
+}
+
+static protected function EventListenerReturn ConfigureSquadCollapse(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local LWTuple Tuple;
+
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+	Tuple = LWTuple(EventData);
+	
+	// Check that we are interested in actually doing something
+	if (Configuration == none || Tuple == none || Tuple.Id != 'rjSquadSelect_AllowCollapseSquad') return ELR_NoInterrupt;
+
+	// We never allow squad collapse in SSAAT since the slots can have very strict requirments (and can differ)
+	Tuple.Data[0].b = false;
+
+	return ELR_NoInterrupt;
+}
+
+////////////////////////////
+/// Pre-UISS squad setup ///
+////////////////////////////
+
+static function CHEventListenerTemplate CreatePreScreenSetupEvents()
+{
+	local CHEventListenerTemplate Template;
+
+	`CREATE_X2TEMPLATE(class'CHEventListenerTemplate', Template, 'SSAAT_PreScreenSetup');
+	Template.AddCHEvent('EnterSquadSelect', OnEnterSquadSelect); // This we want to trigger post gamestate submission
+	Template.RegisterInStrategy = true;
+
+	return Template;
+}
+
+static protected function EventListenerReturn OnEnterSquadSelect(Object EventData, Object EventSource, XComGameState GameState, Name EventID, Object CallbackData)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local XComGameStateHistory History;
+	
+	local XComGameState_HeadquartersXCom XcomHQ;
+	local XComGameState NewGameState;
+	local bool HasChanges;
+
+	local array<XComGameState_Unit> KickedUnits;
+	local array<int> SlotsToEmpty;
+
+	local StateObjectReference UnitRef;
+	local XComGameState_Unit Unit;
+	local bool NeedsToBeKicked;
+	local int iSlot;
+
+	History = `XCOMHISTORY;
+	NewGameState = class'XComGameStateContext_ChangeContainer'.static.CreateChangeState("SSAAT: Pre-UISS squad setup");
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+
+	XComHQ = XComGameState_HeadquartersXCom(History.GetSingleGameStateObjectForClass(class'XComGameState_HeadquartersXCom'));
+	XComHQ = XComGameState_HeadquartersXCom(NewGameState.ModifyStateObject(class'XComGameState_HeadquartersXCom', XComHQ.ObjectID));
+
+	foreach XcomHQ.Squad(UnitRef, iSlot)
+	{
+		Unit = XComGameState_Unit(History.GetGameStateForObjectID(UnitRef.ObjectID));
+
+		if (Configuration == none)
+		{
+			// Normal mission, kick non-soldiers out
+			NeedsToBeKicked = !Unit.IsSoldier();
+		}
+		else
+		{
+			if (iSlot > Configuration.GetNumSlots() - 1)
+			{
+				// We aren't even planning on having this slot at all, so kick in any case (maybe find another suitable slot later?)
+				NeedsToBeKicked = true;
+			}
+			else
+			{
+				NeedsToBeKicked = !Configuration.IsUnitEligible(Unit, iSlot);
+			}
+		}
+
+		if (NeedsToBeKicked)
+		{
+			SlotsToEmpty.AddItem(iSlot);
+			KickedUnits.AddItem(Unit);
+		}
+	}
+	
+	foreach SlotsToEmpty(iSlot)
+	{
+		XcomHQ.Squad[iSlot].ObjectID = 0;
+		HasChanges = true;
+	}
+
+	if (Configuration != none)
+	{
+		// We are in a SSAAT session, so do 2 things. Note that the order is very important
+
+		// (a) Adjust the squad size to match the config
+		if (XComHQ.Squad.Length != Configuration.GetNumSlots())
+		{
+			XComHQ.Squad.Length = Configuration.GetNumSlots();
+			HasChanges = true;
+		}
+
+		// (b) Attempt to fill in empty slots with kicked units (so that we retain selection if slots were changed places)
+		for (iSlot = 0; iSlot < XComHQ.Squad.Length; iSlot++)
+		{
+			if (XComHQ.Squad[iSlot].ObjectID != 0) continue;
+			
+			foreach KickedUnits(Unit)
+			{
+				if (Configuration.IsUnitEligible(Unit, iSlot))
+				{
+					XcomHQ.Squad[iSlot].ObjectID = Unit.ObjectID;
+					KickedUnits.RemoveItem(Unit);
+					break; // Stop the subtitution loop for current unit
+				}
+			}
+		}
+	}
+
+	if (HasChanges)
+	{
+		History.AddGameStateToHistory(NewGameState);
+	}
+	else
+	{
+		History.CleanupPendingGameState(NewGameState);
+	}
 
 	return ELR_NoInterrupt;
 }
