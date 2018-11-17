@@ -6,62 +6,64 @@
 //  WOTCStrategyOverhaul Team
 //---------------------------------------------------------------------------------------
 
-class SSAAT_ElementRemover extends UIPanel;
+class SSAAT_ElementRemover extends Object;
 
-simulated function InitRemover() 
+var protected UISquadSelect SquadSelect;
+var protected SSAAT_SquadSelectConfiguration Configuration;
+var protected delegate<UIPanel.OnChildChanged> PrevOnChildAdded;
+
+simulated function InitRemover(SSAAT_SquadSelectConfiguration InitConfiguration)
 {
-	InitPanel('SSAAT_ElementRemover');
+	Configuration = InitConfiguration;
+	SquadSelect = UISquadSelect(Outer);
 
-	if (GetParentSquadSelect() == none) {
-		`REDSCREEN("SSAAT_ElementRemover needs to be a child of UISquadSelect");
-		Destroy();
+	if (SquadSelect == none)
+	{
+		`REDSCREEN("SSAAT_ElementRemover is not attached to UISquadSelect - will do nothing");
+		`REDSCREEN(GetScriptTrace());
 	}
+	else
+	{
+		PrevOnChildAdded = SquadSelect.OnChildAdded;
+		SquadSelect.OnChildAdded = OnChildAdded;
 
-	// Delayed proccessing so that everything is created for sure
-	SetTimer(1.0, false, nameof(DoRemoval));
+		SquadSelect.AddOnInitDelegate(OnScreenInit);
+	}
 }
 
-simulated function UISquadSelect GetParentSquadSelect() 
+simulated protected function OnScreenInit(UIPanel Panel)
 {
-	return UISquadSelect(ParentPanel);
-}
-
-simulated protected function DoRemoval()
-{
-	local SSAAT_SquadSelectConfiguration Configuration;
-	local UISquadSelect SquadSelect;
-
-	local array<name> Panels;
-	local UIPanel ChildPanel;
-	local name ChildName;
-
-	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
-	SquadSelect = GetParentSquadSelect();
-
-	Panels = Configuration.GetPanelsToRemove();
-	foreach Panels(ChildName) {
-		ChildPanel = SquadSelect.GetChildByName(ChildName, false);
-
-		if (ChildPanel != none) ChildPanel.Remove();
-	}
-
-	Panels = Configuration.GetPanelsToHide();
-	foreach Panels(ChildName) {
-		ChildPanel = SquadSelect.GetChildByName(ChildName, false);
-
-		if (ChildPanel != none) ChildPanel.Hide();
-	}
-
 	// Mission info and launch button need to be hidden via property as they uses auto-generated names
 	// They aren't destroyed since that will cause "none accessed errors"
 	if(Configuration.ShouldHideMissionInfo()) SquadSelect.m_kMissionInfo.Hide();
 	if(!Configuration.ShouldShowLaunchButton()) SquadSelect.LaunchButton.Hide();
-
-	// We are no longer needed
-	Remove();
 }
 
-defaultproperties
+simulated protected function OnChildAdded(UIPanel Panel)
 {
-	bIsNavigable = false;
+	local array<name> PanelNames;
+
+	if (PrevOnChildAdded != none)
+	{
+		PrevOnChildAdded(Panel);
+	}
+
+	if (Panel.ParentPanel != SquadSelect)
+	{
+		// Screens own their recursive children. Explicitly check here!
+		return;
+	}
+
+	PanelNames = Configuration.GetPanelsToRemove();
+	if (PanelNames.Find(Panel.MCName) != INDEX_NONE)
+	{
+		Panel.Remove();
+		return;
+	}
+	
+	PanelNames = Configuration.GetPanelsToHide();
+	if (PanelNames.Find(Panel.MCName) != INDEX_NONE)
+	{
+		Panel.Hide();
+	}
 }

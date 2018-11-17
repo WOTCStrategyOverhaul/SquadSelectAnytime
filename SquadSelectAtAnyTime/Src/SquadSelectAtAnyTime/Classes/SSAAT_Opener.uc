@@ -114,6 +114,6 @@ static protected function PostSquadSelectInit(UISquadSelect SquadSelect, SSAAT_S
 {
 	local SSAAT_ElementRemover ElementRemover;
 
-	ElementRemover = SquadSelect.Spawn(class'SSAAT_ElementRemover', SquadSelect);
-	ElementRemover.InitRemover();
+	ElementRemover = new(SquadSelect) class'SSAAT_ElementRemover';
+	ElementRemover.InitRemover(Configuration);
 }
