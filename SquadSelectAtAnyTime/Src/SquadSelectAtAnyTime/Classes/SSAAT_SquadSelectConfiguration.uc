@@ -33,6 +33,9 @@ var protected array<SSAAT_SlotConfiguration> Slots;
 // Launch button
 var protected delegate<CanClickLaunch> CanClickLaunchFn;
 var protected delegate<OnLaunch> OnLaunchFn;
+var protected bool bReplaceLaunchText;
+var protected string LaunchLabelLine1;
+var protected string LaunchLabelLine2;
 var protected bool bShowSkyrangerTakeoff;
 
 // Removal of default UI elements
@@ -239,6 +242,24 @@ function bool ShouldShowSkyrangerTakeoff()
 	return bShowSkyrangerTakeoff;
 }
 
+function bool ShouldReplaceLaunchText()
+{
+	`WarnNotFrozenForGetter;
+	return bReplaceLaunchText;
+}
+
+function string GetLauchLabelLine1()
+{
+	`WarnNotFrozenForGetter;
+	return LaunchLabelLine1;
+}
+
+function string GetLauchLabelLine2()
+{
+	`WarnNotFrozenForGetter;
+	return LaunchLabelLine2;
+}
+
 ///////////////////////////////
 /// LAUNCH BUTTON - SETTERS ///
 ///////////////////////////////
@@ -255,6 +276,24 @@ function SetLaunchBehaviour(delegate<OnLaunch> Fn, bool ShowSkyrangerTakeoff)
 	
 	OnLaunchFn = Fn;
 	bShowSkyrangerTakeoff = ShowSkyrangerTakeoff;
+}
+
+function EnableLaunchLabelReplacement(string Line1, string Line2)
+{
+	`EnsureNotFrozenForSetter;
+
+	bReplaceLaunchText = true;
+	LaunchLabelLine1 = Line1;
+	LaunchLabelLine2 = Line2;
+}
+
+function DisableLaunchLabelReplacement()
+{
+	`EnsureNotFrozenForSetter;
+
+	bReplaceLaunchText = false;
+	LaunchLabelLine1 = "";
+	LaunchLabelLine2 = "";
 }
 
 ////////////////////////////

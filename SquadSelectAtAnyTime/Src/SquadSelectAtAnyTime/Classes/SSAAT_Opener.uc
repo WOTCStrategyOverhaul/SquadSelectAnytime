@@ -51,8 +51,9 @@ static function UISquadSelect ShowSquadSelect(optional SSAAT_SquadSelectConfigur
 	DataHolder = HQPres.Spawn(class'SSAAT_SessionDataHolder', HQPres.m_kAvengerHUD);
 	DataHolder.InitDataHolder(Configuration, MissionState.ObjectID);
 
-	HQPres.UISquadSelect();
-	TheScreen = GetSquadSelectFromStack(HQPres);
+	TheScreen = HQPres.Spawn(class'UISquadSelect', HQPres);
+	PreSquadSelectInit(TheScreen, Configuration);
+	HQPres.ScreenStack.Push(TheScreen);
 
 	PostSquadSelectInit(TheScreen, Configuration);
 	DataHolder.RegisterOnRemovedCallback(TheScreen);
@@ -107,6 +108,25 @@ static protected function ClearExistingDataHolder()
 	{
 		`log("Warning: SSAAT_SessionDataHolder existing when opening SS - something went wrong with cleanup?",, 'SSAAT');
 		DataHolder.DoCleanup();
+	}
+}
+
+static protected function PreSquadSelectInit(UISquadSelect SquadSelect, SSAAT_SquadSelectConfiguration Configuration)
+{
+	if (Configuration.ShouldReplaceLaunchText())
+	{
+		if (`ISCONTROLLERACTIVE)
+		{
+			SquadSelect.m_strLaunch = Configuration.GetLauchLabelLine1();
+			SquadSelect.m_strMission = Configuration.GetLauchLabelLine2();
+		}
+		else
+		{
+			// When using mouse (and the label isn't concatenated into 1 row) the lines are reversed
+			SquadSelect.m_strLaunch = Configuration.GetLauchLabelLine2();
+			SquadSelect.m_strMission = Configuration.GetLauchLabelLine1();
+		}
+		
 	}
 }
 
