@@ -211,7 +211,7 @@ function protected InternalValidateSlot(out SSAAT_SlotConfiguration InSlot)
 
 static function bool DefaultCanSoldierBeSelected(XComGameState_Unit Unit, int iSlot)
 {
-	return Unit.CanGoOnMission();
+	return Unit.CanGoOnMission() && !`XCOMHQ.IsUnitInSquad(Unit.GetReference());
 }
 
 ///////////////////////////////
