@@ -265,6 +265,11 @@ static protected function EventListenerReturn OnEnterSquadSelect(Object EventDat
 	{
 		Unit = XComGameState_Unit(History.GetGameStateForObjectID(UnitRef.ObjectID));
 
+		if (Unit == none)
+		{
+			continue;
+		}
+
 		if (Configuration == none)
 		{
 			// Normal mission, kick non-soldiers out
