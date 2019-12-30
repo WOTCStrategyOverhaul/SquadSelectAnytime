@@ -90,6 +90,8 @@ static protected function XComGameState_MissionSite BuildMissionSite(XComGameSta
 	MissionState.GeneratedMission.Mission.MaxSoldiers = Configuration.GetNumSlots();
 	MissionState.GeneratedMission.BattleOpName = "Squad select (no mission)";
 
+	Configuration.CallAugmentFakeMissionSiteFn(MissionState);
+
 	return MissionState;
 }
 

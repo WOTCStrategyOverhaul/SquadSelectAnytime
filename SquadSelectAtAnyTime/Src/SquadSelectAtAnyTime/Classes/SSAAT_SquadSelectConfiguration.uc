@@ -24,6 +24,7 @@ struct SSAAT_SlotConfiguration
 };
 
 // Opening the screen
+var protected delegate<AugmentFakeMissionSite> AugmentFakeMissionSiteFn;
 var protected bool bDisallowAutoFill;
 var protected bool bSkipIntroAnimation;
 
@@ -57,6 +58,7 @@ var bool bDisableGetBeforeFreezeWarning;
 delegate bool CanUnitBeSelected(XComGameState_Unit Unit, int iSlot);
 delegate bool CanClickLaunch();
 delegate OnLaunch();
+delegate AugmentFakeMissionSite(XComGameState_MissionSite MissionSite);
 
 // Error checking helpers
 `define ReportError(error) `REDSCREEN(`error); `REDSCREEN(GetScriptTrace());
@@ -83,6 +85,21 @@ static function SSAAT_SquadSelectConfiguration CreateWithDefaults()
 /// Opening the screen - getters ///
 ////////////////////////////////////
 
+function GetAugmentFakeMissionSiteFn(out delegate<AugmentFakeMissionSite> Fn)
+{
+	`WarnNotFrozenForGetter;
+	Fn = AugmentFakeMissionSiteFn;
+}
+
+// Here to workaround "Can't call instance functions from within static functions" error when invoking delegates from static functions
+function CallAugmentFakeMissionSiteFn(XComGameState_MissionSite MissionSite)
+{
+	local delegate<AugmentFakeMissionSite> LocalAugmentFakeMissionSiteFn;
+
+	GetAugmentFakeMissionSiteFn(LocalAugmentFakeMissionSiteFn);
+	if (LocalAugmentFakeMissionSiteFn != none) LocalAugmentFakeMissionSiteFn(MissionSite);
+}
+
 function bool ShouldDisallowAutoFill()
 {
 	`WarnNotFrozenForGetter;
@@ -98,6 +115,12 @@ function bool ShouldSkipIntroAnimation()
 ////////////////////////////////////
 /// Opening the screen - setters ///
 ////////////////////////////////////
+
+function SetAugmentFakeMissionSiteFn(delegate<AugmentFakeMissionSite> Fn)
+{
+	`EnsureNotFrozenForSetter;
+	AugmentFakeMissionSiteFn = Fn;
+}
 
 function SetDisallowAutoFill(bool DisallowAutoFill)
 {
