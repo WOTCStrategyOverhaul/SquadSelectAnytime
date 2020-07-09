@@ -138,4 +138,31 @@ static protected function PostSquadSelectInit(UISquadSelect SquadSelect, SSAAT_S
 
 	ElementRemover = new(SquadSelect) class'SSAAT_ElementRemover';
 	ElementRemover.InitRemover(Configuration);
+	
+	if (Configuration.ShouldConfirmLaunch())
+	{
+		SquadSelect.LaunchButton.OnClickedDelegate = CreateConfirmDialog;
+	}
+}
+
+simulated function CreateConfirmDialog(UIButton Button)
+{
+	local SSAAT_SquadSelectConfiguration Configuration;
+	local delegate<SSAAT_SquadSelectConfiguration.CanClickLaunch> ShouldShowConfirm;
+
+	Configuration = class'SSAAT_Helpers'.static.GetCurrentConfiguration();
+	Configuration.GetShouldShowConfirmFn(ShouldShowConfirm);
+
+	if (Configuration.ShouldConfirmLaunch() && ShouldShowConfirm())
+	{
+		`Log("DIALOG OPENED!");
+
+		// show dialog with the config's title and text
+		// if player clicks yes, call OnLaunchMission
+		// if player clicks no, close the dialog
+	}
+	else
+	{
+		class'SSAAT_Helpers'.static.GetSquadSelect().OnLaunchMission(Button);
+	}
 }

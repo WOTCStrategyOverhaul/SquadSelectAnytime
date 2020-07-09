@@ -37,6 +37,10 @@ var protected delegate<OnLaunch> OnLaunchFn;
 var protected bool bReplaceLaunchText;
 var protected string LaunchLabelLine1;
 var protected string LaunchLabelLine2;
+var protected bool bConfirmLaunch;
+var protected string LaunchConfirmTitle;
+var protected string LaunchConfirmText;
+var protected delegate<CanClickLaunch> ShouldShowConfirmFn;
 var protected bool bShowSkyrangerTakeoff;
 
 // Removal of default UI elements
@@ -259,6 +263,12 @@ function GetOnLaunchFn(out delegate<OnLaunch> Fn)
 	Fn = OnLaunchFn;
 }
 
+function GetShouldShowConfirmFn(out delegate<CanClickLaunch> Fn)
+{
+	`WarnNotFrozenForGetter;
+	Fn = ShouldShowConfirmFn;
+}
+
 function bool ShouldShowSkyrangerTakeoff()
 {
 	`WarnNotFrozenForGetter;
@@ -271,6 +281,12 @@ function bool ShouldReplaceLaunchText()
 	return bReplaceLaunchText;
 }
 
+function bool ShouldConfirmLaunch()
+{
+	`WarnNotFrozenForGetter;
+	return bConfirmLaunch;
+}
+
 function string GetLauchLabelLine1()
 {
 	`WarnNotFrozenForGetter;
@@ -281,6 +297,18 @@ function string GetLauchLabelLine2()
 {
 	`WarnNotFrozenForGetter;
 	return LaunchLabelLine2;
+}
+
+function string GetLaunchConfirmTitle()
+{
+	`WarnNotFrozenForGetter;
+	return LaunchConfirmTitle;
+}
+
+function string GetLaunchConfirmText()
+{
+	`WarnNotFrozenForGetter;
+	return LaunchConfirmText;
 }
 
 ///////////////////////////////
@@ -317,6 +345,26 @@ function DisableLaunchLabelReplacement()
 	bReplaceLaunchText = false;
 	LaunchLabelLine1 = "";
 	LaunchLabelLine2 = "";
+}
+
+function EnableLaunchConfirmation(string Title, string Text, delegate<CanClickLaunch> Fn)
+{
+	`EnsureNotFrozenForSetter;
+
+	bConfirmLaunch = true;
+	LaunchConfirmTitle = Title;
+	LaunchConfirmText = Text;
+	ShouldShowConfirmFn = Fn;
+}
+
+function DisableLaunchConfirmation()
+{
+	`EnsureNotFrozenForSetter;
+
+	bConfirmLaunch = false;
+	LaunchConfirmTitle = "";
+	LaunchConfirmText = "";
+	ShouldShowConfirmFn = none;
 }
 
 ////////////////////////////
