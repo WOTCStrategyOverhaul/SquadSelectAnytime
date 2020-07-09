@@ -29,7 +29,7 @@ static function SSAAT_SquadSelectConfiguration GetCurrentConfiguration()
 	// Avoid "none accessed" warnings
 	if (DataHolder == none) return none;
 
-	return DataHolder.Configuartion;
+	return DataHolder.Configuration;
 }
 
 static function UISquadSelect GetSquadSelect()
