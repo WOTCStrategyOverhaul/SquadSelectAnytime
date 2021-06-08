@@ -1,0 +1,6 @@
+[SSAAT_Listener_AvengerHud]
+Button_Label="Truppauswahl öffnen"
+Button_Description="Öffnet den Truppauswahl-Bildschirm ohne eine Mission zu starten"
+
+ButtonAdvanced_Label="Spezielle Truppauswahl öffnen"
+ButtonAdvanced_Description="Öffnet den Truppauswahl-Bildschirm und demonstriert ein paar der neuen Features dieser Modifikation<br/>Diese Features sind für die Nutzung durch andere Modifikationen gedacht"
