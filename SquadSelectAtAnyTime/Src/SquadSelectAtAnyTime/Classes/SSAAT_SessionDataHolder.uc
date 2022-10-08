@@ -12,14 +12,14 @@ class SSAAT_SessionDataHolder extends UIPanel;
 
 var const name PanelName;
 
-var protectedwrite SSAAT_SquadSelectConfiguration Configuration;
+var protectedwrite SSAAT_SquadSelectConfiguration Configuartion;
 var protectedwrite int MissionObjectId;
 
-function InitDataHolder(SSAAT_SquadSelectConfiguration InConfiguration, int InMissionObjectId)
+function InitDataHolder(SSAAT_SquadSelectConfiguration InConfiguartion, int InMissionObjectId)
 {
 	InitPanel(PanelName);
 
-	Configuration = InConfiguration;
+	Configuartion = InConfiguartion;
 	MissionObjectId = InMissionObjectId;
 	
 	if (UIAvengerHUD(ParentPanel) == none)
