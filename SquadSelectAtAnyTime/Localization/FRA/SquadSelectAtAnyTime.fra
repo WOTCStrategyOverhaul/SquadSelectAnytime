@@ -1,0 +1,6 @@
+[SSAAT_Listener_AvengerHud]
+Button_Label="Ouvrir la sélection d'escouade"
+Button_Description="Ouvre la sélection d'esouade sans aller dans une mission"
+
+ButtonAdvanced_Label="Ouvrir la sélection d'escouade (avancée)"
+ButtonAdvanced_Description="Ouvrir l'écran de sélection d'escouade et montre quelque unes des options avancées que ce mod ajoute<br/> Ces options sont destiné à être utilisé par d'autres mods"
